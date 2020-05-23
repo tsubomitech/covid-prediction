@@ -3,10 +3,8 @@ package com.saada.springboot;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.net.URL;
-import java.util.Map;
 
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -26,20 +24,19 @@ public class TestController {
         ObjectMapper oMapper = new ObjectMapper();
         oMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 
-        System.out.println(req.toString());
         RowData row = oMapper.convertValue(req, new TypeReference<RowData>(){});
-        // RowData row = new RowData();
-        // row.putAll(requestMap);
         return execute(row);
     }
 
 
     public Response execute(RowData row) throws Exception {
-        URL mojoURL = TestController.class.getResource("GBM_1_AutoML_20200521_175236.zip");
+        URL mojoURL = TestController.class.getResource("GBM_1_AutoML_20200523_124422.zip");
         MojoReaderBackend reader = MojoReaderBackendFactory.createReaderBackend(mojoURL, MojoReaderBackendFactory.CachingStrategy.MEMORY);
         MojoModel model = ModelMojoReader.readFrom(reader);
         EasyPredictModelWrapper modelWrapper = new EasyPredictModelWrapper(model);
-        BinomialModelPrediction prediction = (BinomialModelPrediction) modelWrapper.predict(row);
+
+        System.out.println(row);
+        BinomialModelPrediction prediction = modelWrapper.predictBinomial(row);
 
         Response res = new Response();
         res.probability0 = prediction.classProbabilities[0];
