@@ -23,5 +23,6 @@ curl -X POST localhost:8080/test -H 'Content-Type: application/json' -d '{"map":
 - [x] map inputs to row columns
 - [x] parse prediction output
 - [x] return death probability values
+- [x] frontend
 - [ ] (eventually) store input data in a database
 - [ ] google analytics

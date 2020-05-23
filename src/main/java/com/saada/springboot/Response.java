@@ -4,10 +4,10 @@ public class Response {
     Double probability0;
     Double probability1;
     public Double getProbability0() {
-        return probability0;
+        return this.probability0;
     }
 
     public Double getProbability1() {
-        return probability1;
+        return this.probability1;
     }
 }
