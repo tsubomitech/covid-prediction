@@ -30,7 +30,7 @@ public class TestController {
 
 
     public Response execute(RowData row) throws Exception {
-        URL mojoURL = TestController.class.getResource("GBM_1_AutoML_20200523_124422.zip");
+        URL mojoURL = TestController.class.getResource("GLM_1_AutoML_20200608_155614.zip");
         MojoReaderBackend reader = MojoReaderBackendFactory.createReaderBackend(mojoURL, MojoReaderBackendFactory.CachingStrategy.MEMORY);
         MojoModel model = ModelMojoReader.readFrom(reader);
         EasyPredictModelWrapper modelWrapper = new EasyPredictModelWrapper(model);
