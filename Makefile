@@ -7,7 +7,6 @@ fe:
 	cd frontend && npm run dev
 
 docker:
-	docker kill kenji
 	docker build -t kenji .
 	docker run --rm -it -p 8080:8080 kenji
 
