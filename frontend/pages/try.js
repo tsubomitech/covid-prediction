@@ -1,8 +1,51 @@
+import { useState, useEffect } from "react";
+import Select from "@material-ui/core/Select";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  makeStyles,
+  Button,
+  Chip,
+  Input,
+  TextField,
+} from "@material-ui/core";
 import Layout from "../components/layout";
-import { useState } from "react";
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+    maxWidth: 300,
+  },
+  chips: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+  chip: {
+    margin: 2,
+  },
+  noLabel: {
+    marginTop: theme.spacing(3),
+  },
+}));
 
 const API_URL = "/api";
 // {"map": 55.3, "ldh": 340, "charlson_with_Age": 9, "pulseOx": 92, "egfr": 63, "troponin": 0.01, "ddimerIni": 1.24, "rr": 22, "mcv": 93.5, "calcium": 5.2}
+
+async function getModels() {}
+
 export default function Try() {
   const [formFields, setFormFields] = useState({
     map: 55.3,
@@ -17,6 +60,24 @@ export default function Try() {
     calcium: 5.2,
   });
 
+  const [models, setModels] = useState({
+    list: [],
+    selected: ["GLM_1_AutoML_20200608_155614"],
+  });
+
+  useEffect(() => {
+    const fetchModels = async () => {
+      const res = await fetch(API_URL, { method: "GET" });
+      const json = await res.json();
+      if (json.type === "success") {
+        setModels({ ...models, list: json.message });
+      } else {
+        console.error(json);
+      }
+    }
+    fetchModels();
+  }, []);
+
   const [response, setResponse] = useState({
     type: "success",
     message: "Click submit to get some probabilities...",
@@ -28,24 +89,32 @@ export default function Try() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(API_URL, {
-        method: "POST",
-        body: JSON.stringify(formFields),
-        headers: { "Content-Type": "application/json" },
-      });
+      const promises = await Promise.all(
+        models.selected.map((model) =>
+          fetch(API_URL, {
+            method: "POST",
+            body: JSON.stringify(formFields),
+            headers: {
+              "Content-Type": "application/json",
+              "X-Model": model,
+            },
+          })
+        )
+      );
 
-      const json = await res.json();
-      if (json.type === "success") {
-        setResponse({
-          type: "success",
-          message: JSON.stringify(json.message),
-        });
-      } else {
-        setResponse({
-          type: "error",
-          message: JSON.stringify(json),
-        });
+      const responses = [];
+      for (let i = 0; i < promises.length; i++) {
+        const json = await promises[i].json();
+        if (json.type === "success") {
+          responses.push({model: models.selected[i], results: json.message});
+        } else {
+          setResponse({
+            type: "error",
+            message: JSON.stringify(json),
+          });
+        }
       }
+      setResponse({ type: "success", message: JSON.stringify(responses, null, 2) });
     } catch (e) {
       console.log("An error occurred", e);
       setResponse({
@@ -55,13 +124,13 @@ export default function Try() {
     }
   };
 
-  let output = null
+  let output = null;
   if (response.type === "error") {
-    output = <p style={{color: "red"}}>{response.message}</p>;
+    output = <div style={{ color: "red" }}>{response.message}</div>;
   } else {
-    output = <p style={{color: "green"}}>{response.message}</p>;
+    output = <div style={{ color: "green" }}><pre>{response.message}</pre></div>;
   }
-
+  const classes = useStyles();
   return (
     <Layout>
       <h1>Try</h1>
@@ -78,31 +147,57 @@ export default function Try() {
               required
             />
           </p> */}
+
           {Object.keys(formFields).map((f) => (
-            <p key={f}>
-              <label htmlFor={"input__" + f}>{f}</label>
-              <input
-                id={"input__" + f}
-                name={f}
-                type="number"
-                step="0.01"
-                value={formFields[f]}
-                placeholder="Enter a number"
-                onChange={handleChange}
-                required
-              />
-            </p>
+            <TextField
+              key={f}
+              id={"input__" + f}
+              name={f}
+              label={f}
+              type="number"
+              step="0.01"
+              value={formFields[f]}
+              onChange={handleChange}
+              style={{ margin: "5px" }}
+              // helperText="Enter a number"
+              required
+            />
           ))}
-          <p>
-            <button type="submit">Submit</button>
-            {/* <button type="reset">Clear</button> */}
-            {/* <button type="button" disabled="">
-              &lt;button disabled&gt;
-            </button> */}
-          </p>
-          <div>
-            {output}
-          </div>
+          <br />
+          <FormControl className={classes.formControl}>
+            <InputLabel id="models-label">Models</InputLabel>
+            <Select
+              labelId="models-label"
+              id="models-chip"
+              multiple
+              value={models.selected}
+              onChange={(e) =>
+                setModels({ ...models, selected: e.target.value })
+              }
+              input={<Input id="select-multiple-models" />}
+              renderValue={(selected) => (
+                <div className={classes.chips}>
+                  {models.selected.map((value) => (
+                    <Chip
+                      key={"chip__" + value}
+                      label={value}
+                      className={classes.chip}
+                    />
+                  ))}
+                </div>
+              )}
+              MenuProps={MenuProps}
+            >
+              {models.list.map((model) => (
+                <MenuItem key={"item__" + model} value={model}>
+                  {model}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <br />
+          <Button type="submit">Submit</Button>
+          <div>{output}</div>
         </fieldset>
       </form>
     </Layout>
