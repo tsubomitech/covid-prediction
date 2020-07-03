@@ -3,7 +3,7 @@ import theme from "./theme";
 export default function Header() {
   return (
     <Head>
-      <title>Kenji App</title>
+      <title>{process.env.NEXT_PUBLIC_APP_NAME}</title>
       <link rel="icon" href="/favicon.ico" />
       {/* <link
         rel="stylesheet"

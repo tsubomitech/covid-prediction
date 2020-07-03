@@ -25,11 +25,11 @@ export default function Navbar() {
     <Container xs={12}>
       <Link href="/" className={classes.title}>
         <Typography align="center" variant="h1" >
-          kenji
+          {process.env.NEXT_PUBLIC_APP_NAME}
         </Typography>
       </Link>
       <Typography align="center" variant="h4" className={classes.subtitle}>
-        Fighting COVID19 with ML
+        Using ML to fight COVID-19
       </Typography>
     </Container>
   );
