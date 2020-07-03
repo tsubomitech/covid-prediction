@@ -10,6 +10,10 @@ on:
   pull_request:
     branches: [ master ]
 
+env:
+  PROJECT_ID: ${{ secrets.RUN_PROJECT }}
+  RUN_REGION: us-central1
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -22,19 +26,43 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
 
-    - name: build and push ui
-      uses: docker/build-push-action@v1.1.0
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
-        username: ${{ secrets.DockerhubUsername }}
-        password: ${{ secrets.DockerhubPassword }}
-        repository: private
-        tags: covid-prediction-ui
-        path: frontend
-    - name: build and push api
-      uses: docker/build-push-action@v1.1.0
-      with:
-        username: ${{ secrets.DockerhubUsername }}
-        password: ${{ secrets.DockerhubPassword }}
-        repository: private
-        tags: covid-prediction-api
-        path: backend
+        version: '290.0.1'
+        service_account_key: ${{ secrets.RUN_SA_KEY }}
+        project_id: ${{ secrets.RUN_PROJECT }}
+
+    # Build and push image to Google Container Registry
+    - name: Build UI
+      run: |-
+        gcloud builds submit \
+          --quiet \
+          --tag "gcr.io/$PROJECT_ID/covid-prediction-ui:$GITHUB_SHA"
+    - name: Build API
+      run: |-
+        gcloud builds submit \
+          --quiet \
+          --tag "gcr.io/$PROJECT_ID/covid-prediction-api:$GITHUB_SHA"
+    - name: Deploy UI
+      run: |-
+        export SERVICE_NAME="covid-prediction-ui"
+        gcloud run deploy "$SERVICE_NAME" \
+          --quiet \
+          --region "$RUN_REGION" \
+          --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
+          --platform "managed" \
+          --allow-unauthenticated \
+          --port=3000 \
+          --max-instances=10
+    - name: Deploy API
+      run: |-
+        export SERVICE_NAME="covid-prediction-api"
+        gcloud run deploy "$SERVICE_NAME" \
+          --quiet \
+          --region "$RUN_REGION" \
+          --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
+          --platform "managed" \
+          --allow-unauthenticated \
+          --port=8080 \
+          --max-instances=10
