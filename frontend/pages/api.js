@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-unfetch'
 
-const API_URL = "http://localhost:8080";
+const API_URL = process.env.API_URL || "http://localhost:8080";
 
 export default async (req, res) => {
   if (req.method === "GET") {

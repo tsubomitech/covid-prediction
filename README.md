@@ -9,13 +9,9 @@ Inspird by [mojo-resource](https://github.com/h2oai/h2o-tutorials/tree/master/tu
 
 ## Run
 
-* Make
+* Run frontend and backend
 
 ```sh
-make install
-# open terminal 1
-make fe
-# open terminal 2
 make docker
 # navigate to http://localhost:3000 to see webapp
 ```
