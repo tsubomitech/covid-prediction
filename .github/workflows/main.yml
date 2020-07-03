@@ -56,7 +56,8 @@ jobs:
           --platform "managed" \
           --allow-unauthenticated \
           --port=3000 \
-          --max-instances=10
+          --max-instances=10 \
+          --memory=128Mi
     - name: Deploy API
       run: |-
         export SERVICE_NAME="covid-prediction-api"
@@ -67,4 +68,5 @@ jobs:
           --platform "managed" \
           --allow-unauthenticated \
           --port=8080 \
-          --max-instances=10
+          --max-instances=10 \
+          --memory=512Mi
