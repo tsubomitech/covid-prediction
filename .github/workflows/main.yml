@@ -58,6 +58,10 @@ jobs:
           --port=3000 \
           --max-instances=10 \
           --memory=128Mi
+    - name: Update DNS
+      run: |-
+        export SERVICE_NAME="covid-prediction-ui"
+        gcloud beta run domain-mappings create --service "$SERVICE_NAME" --domain covid.saada.dev
     - name: Deploy API
       run: |-
         export SERVICE_NAME="covid-prediction-api"
