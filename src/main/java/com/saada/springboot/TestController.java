@@ -1,10 +1,22 @@
 package com.saada.springboot;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -19,21 +31,36 @@ import hex.genmodel.easy.prediction.BinomialModelPrediction;
 @RestController
 public class TestController {
 
+    @GetMapping("/models")
+    public ResponseEntity<String[]> listModels() throws IOException {
+        String[] filenames = Files
+            .list(Paths.get("src/main/resources/com/saada/springboot"))
+            .filter(Files::isRegularFile)
+            .map(p -> p.getFileName().toString())
+            .filter(name -> name.endsWith(".zip"))
+            .map(f -> f.replace(".zip", ""))
+            .toArray(String[]::new);
+        System.out.println(filenames);
+
+        return new ResponseEntity<String[]>(filenames, HttpStatus.OK);
+    }
+
     @PostMapping("/test")
-	public Response index(@RequestBody Request req) throws Exception {
+    public Response index(@RequestBody Request req, @RequestHeader("X-Model") String model) throws Exception {
         ObjectMapper oMapper = new ObjectMapper();
         oMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 
-        RowData row = oMapper.convertValue(req, new TypeReference<RowData>(){});
-        return execute(row);
+        RowData row = oMapper.convertValue(req, new TypeReference<RowData>() {
+        });
+        return execute(row, model);
     }
 
-
-    public Response execute(RowData row) throws Exception {
-        URL mojoURL = TestController.class.getResource("GLM_1_AutoML_20200608_155614.zip");
-        MojoReaderBackend reader = MojoReaderBackendFactory.createReaderBackend(mojoURL, MojoReaderBackendFactory.CachingStrategy.MEMORY);
-        MojoModel model = ModelMojoReader.readFrom(reader);
-        EasyPredictModelWrapper modelWrapper = new EasyPredictModelWrapper(model);
+    public Response execute(RowData row, String model) throws Exception {
+        URL mojoURL = TestController.class.getResource(model + ".zip");
+        MojoReaderBackend reader = MojoReaderBackendFactory.createReaderBackend(mojoURL,
+                MojoReaderBackendFactory.CachingStrategy.MEMORY);
+        MojoModel mojoModel = ModelMojoReader.readFrom(reader);
+        EasyPredictModelWrapper modelWrapper = new EasyPredictModelWrapper(mojoModel);
 
         System.out.println(row);
         BinomialModelPrediction prediction = modelWrapper.predictBinomial(row);
