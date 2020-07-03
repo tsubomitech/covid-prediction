@@ -61,7 +61,7 @@ jobs:
     - name: Update DNS
       run: |-
         export SERVICE_NAME="covid-prediction-ui"
-        gcloud beta run domain-mappings create --service "$SERVICE_NAME" --domain covid.saada.dev
+        gcloud beta run domain-mappings create --service "$SERVICE_NAME" --domain covid.saada.dev --quiet
     - name: Deploy API
       run: |-
         export SERVICE_NAME="covid-prediction-api"
