@@ -38,12 +38,14 @@ jobs:
       run: |-
         gcloud builds submit \
           --quiet \
-          --tag "gcr.io/$PROJECT_ID/covid-prediction-ui:$GITHUB_SHA"
+          --tag "gcr.io/$PROJECT_ID/covid-prediction-ui:$GITHUB_SHA" \
+          frontend
     - name: Build API
       run: |-
         gcloud builds submit \
           --quiet \
-          --tag "gcr.io/$PROJECT_ID/covid-prediction-api:$GITHUB_SHA"
+          --tag "gcr.io/$PROJECT_ID/covid-prediction-api:$GITHUB_SHA" \
+          backend
     - name: Deploy UI
       run: |-
         export SERVICE_NAME="covid-prediction-ui"
