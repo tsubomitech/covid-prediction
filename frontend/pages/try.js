@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import Select from "@material-ui/core/Select";
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+
 import {
   FormControl,
   InputLabel,
@@ -198,7 +200,7 @@ export default function Try() {
             </Select>
           </FormControl>
           <br />
-          <Button type="submit" variant="contained" color="primary">Submit</Button>
+          <Button type="submit" size="large" startIcon={<ArrowUpwardIcon />} variant="contained" color="primary">Submit</Button>
           <div>{output}</div>
         </fieldset>
       </form>
