@@ -24,10 +24,6 @@ export default function Layout(props) {
           <Grid
             item
             xs={12}
-            style={{
-              position: "absolute",
-              bottom: "0",
-            }}
           >
             <Footer></Footer>
           </Grid>
