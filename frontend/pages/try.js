@@ -65,16 +65,17 @@ export default function Try() {
     selected: ["GLM_1_AutoML_20200608_155614"],
   });
 
-  useEffect(() => {
-    const fetchModels = async () => {
-      const res = await fetch(API_URL, { method: "GET" });
-      const json = await res.json();
-      if (json.type === "success") {
-        setModels({ ...models, list: json.message });
-      } else {
-        console.error(json);
-      }
+  const fetchModels = async () => {
+    const res = await fetch(API_URL, { method: "GET" });
+    const json = await res.json();
+    if (json.type === "success") {
+      setModels({ ...models, list: json.message });
+    } else {
+      console.error(json);
     }
+  }
+
+  useEffect(() => {
     fetchModels();
   }, []);
 
