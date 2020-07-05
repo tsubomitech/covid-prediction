@@ -13,6 +13,9 @@ on:
 env:
   PROJECT_ID: ${{ secrets.RUN_PROJECT }}
   RUN_REGION: us-central1
+  CLOUDSDK_CORE_DISABLE_PROMPTS: 1 # same as --quiet
+  API_SERVICE_NAME: covid-prediction-api
+  UI_SERVICE_NAME: covid-prediction-ui
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -29,7 +32,7 @@ jobs:
     # Setup gcloud CLI
     - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
       with:
-        version: '290.0.1'
+        version: '299.0.0'
         service_account_key: ${{ secrets.RUN_SA_KEY }}
         project_id: ${{ secrets.RUN_PROJECT }}
 
@@ -37,40 +40,42 @@ jobs:
     - name: Build UI
       run: |-
         gcloud builds submit \
-          --quiet \
           --tag "gcr.io/$PROJECT_ID/covid-prediction-ui:$GITHUB_SHA" \
           frontend
     - name: Build API
       run: |-
         gcloud builds submit \
-          --quiet \
-          --tag "gcr.io/$PROJECT_ID/covid-prediction-api:$GITHUB_SHA" \
+          --tag "gcr.io/$PROJECT_ID/$API_SERVICE_NAME:$GITHUB_SHA" \
           backend
-    - name: Deploy UI
-      run: |-
-        export SERVICE_NAME="covid-prediction-ui"
-        gcloud run deploy "$SERVICE_NAME" \
-          --quiet \
-          --region "$RUN_REGION" \
-          --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
-          --platform "managed" \
-          --allow-unauthenticated \
-          --port=3000 \
-          --max-instances=10 \
-          --memory=128Mi
-    - name: Update DNS
-      run: |-
-        export SERVICE_NAME="covid-prediction-ui"
-        gcloud beta run domain-mappings create --service "$SERVICE_NAME" --domain covid.saada.dev --quiet
     - name: Deploy API
       run: |-
-        export SERVICE_NAME="covid-prediction-api"
-        gcloud run deploy "$SERVICE_NAME" \
-          --quiet \
+        gcloud run deploy "$API_SERVICE_NAME" \
           --region "$RUN_REGION" \
-          --image "gcr.io/$PROJECT_ID/$SERVICE_NAME:$GITHUB_SHA" \
+          --image "gcr.io/$PROJECT_ID/$API_SERVICE_NAME:$GITHUB_SHA" \
           --platform "managed" \
           --allow-unauthenticated \
           --port=8080 \
           --max-instances=10 \
           --memory=512Mi
+    - name: Deploy UI
+      run: |-
+        export API_URL=$(gcloud run services describe --platform=managed "$API_SERVICE_NAME" --region="$RUN_REGION" | grep -i traffic | awk '{print $2}')
+        gcloud run deploy "$UI_SERVICE_NAME" \
+          --region "$RUN_REGION" \
+          --image "gcr.io/$PROJECT_ID/$UI_SERVICE_NAME:$GITHUB_SHA" \
+          --platform "managed" \
+          --allow-unauthenticated \
+          --port=3000 \
+          --max-instances=10 \
+          --set-env-vars="API_URL=$API_URL,NEXTAUTH_URL=https://covid.saada.dev" \
+          --memory=128Mi
+    - name: Add IAM policy to allow service to service communication
+      run: |-
+        export SERVICE_NAME="$API_SERVICE_NAME"
+        export CALLING_SERVICE_IDENTITY=155687937861-compute@developer.gserviceaccount.com
+        gcloud run services add-iam-policy-binding $SERVICE_NAME \
+          --member="serviceAccount:${CALLING_SERVICE_IDENTITY}" \
+          --role='roles/run.invoker'
+    - name: Update DNS
+      run: |-
+        gcloud beta run domain-mappings create --service "$UI_SERVICE_NAME" --domain covid.saada.dev --platform=managed --region="$RUN_REGION"
