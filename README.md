@@ -29,7 +29,7 @@ curl -X POST localhost:8080/test -H 'Content-Type: application/json' -d '{"map":
 * Google CloudRun
 * Service account permissions are setup based on [tutorial](https://github.com/GoogleCloudPlatform/github-actions/tree/master/example-workflows/cloud-run)
 * DNS CNAME record for covid.saada.dev -> ghs.googlehosted.com.
-* Add SA as owner to domain covid.saada.dev [here](https://www.google.com/webmasters/verification/home?hl=en)
+* Setup domain mapping for UI service -> covid.saada.dev
 
 ## Todos
 
