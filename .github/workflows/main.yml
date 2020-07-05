@@ -78,7 +78,12 @@ jobs:
         gcloud run services add-iam-policy-binding $SERVICE_NAME \
           --member="serviceAccount:${CALLING_SERVICE_IDENTITY}" \
           --role='roles/run.invoker' \
-          --platform=managed
+          --platform=managed \
+          --region="$RUN_REGION"
     - name: Update DNS
       run: |-
-        gcloud beta run domain-mappings create --service "$UI_SERVICE_NAME" --domain covid.saada.dev --platform=managed --region="$RUN_REGION"
+        gcloud beta run domain-mappings create \
+          --service "$UI_SERVICE_NAME" \
+          --domain covid.saada.dev \
+          --platform=managed \
+          --region="$RUN_REGION"
