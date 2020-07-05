@@ -18,7 +18,7 @@ export default async (req, res) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     });
     let type = r.status == 200 ? "success" : "error";
@@ -28,7 +28,11 @@ export default async (req, res) => {
     const r = await fetch(API_URL + "/test", {
       method: "POST",
       body: JSON.stringify(req.body),
-      headers: { ...req.headers, Authorization: `Bearer ${token}` },
+      headers: {
+        "X-Model": req.headers["X-Model"],
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
     let type = r.status == 200 ? "success" : "error";
     let message = await r.json();
