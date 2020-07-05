@@ -39,11 +39,13 @@ jobs:
     # Build and push image to Google Container Registry
     - name: Build UI
       run: |-
+        gcloud config set builds/use_kaniko True
         gcloud builds submit \
-          --tag "gcr.io/$PROJECT_ID/covid-prediction-ui:$GITHUB_SHA" \
+          --tag "gcr.io/$PROJECT_ID/$UI_SERVICE_NAME:$GITHUB_SHA" \
           frontend
     - name: Build API
       run: |-
+        gcloud config set builds/use_kaniko True
         gcloud builds submit \
           --tag "gcr.io/$PROJECT_ID/$API_SERVICE_NAME:$GITHUB_SHA" \
           backend
@@ -75,7 +77,8 @@ jobs:
         export CALLING_SERVICE_IDENTITY=155687937861-compute@developer.gserviceaccount.com
         gcloud run services add-iam-policy-binding $SERVICE_NAME \
           --member="serviceAccount:${CALLING_SERVICE_IDENTITY}" \
-          --role='roles/run.invoker'
+          --role='roles/run.invoker' \
+          --platform=managed
     - name: Update DNS
       run: |-
         gcloud beta run domain-mappings create --service "$UI_SERVICE_NAME" --domain covid.saada.dev --platform=managed --region="$RUN_REGION"
