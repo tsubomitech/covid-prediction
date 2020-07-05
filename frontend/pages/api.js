@@ -29,7 +29,7 @@ export default async (req, res) => {
       method: "POST",
       body: JSON.stringify(req.body),
       headers: {
-        "X-Model": req.headers["X-Model"],
+        "x-model": req.headers["x-model"],
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },

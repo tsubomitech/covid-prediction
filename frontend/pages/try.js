@@ -97,7 +97,7 @@ export default function Try() {
             body: JSON.stringify(formFields),
             headers: {
               "Content-Type": "application/json",
-              "X-Model": model,
+              "x-model": model,
             },
           })
         )

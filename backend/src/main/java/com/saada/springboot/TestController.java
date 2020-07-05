@@ -46,7 +46,7 @@ public class TestController {
     }
 
     @PostMapping("/test")
-    public Response index(@RequestBody Request req, @RequestHeader("X-Model") String model) throws Exception {
+    public Response index(@RequestBody Request req, @RequestHeader("x-model") String model) throws Exception {
         ObjectMapper oMapper = new ObjectMapper();
         oMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 
