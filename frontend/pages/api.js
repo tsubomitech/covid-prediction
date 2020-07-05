@@ -12,10 +12,14 @@ export default async (req, res) => {
     return;
   }
 
+  const token = process.env.GOOGLE_CLOUD_RUN ? await getGoogleToken() : null;
   if (req.method === "GET") {
     const r = await fetch(API_URL + "/models", {
       method: "GET",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
     });
     let type = r.status == 200 ? "success" : "error";
     let message = await r.json();
@@ -24,7 +28,7 @@ export default async (req, res) => {
     const r = await fetch(API_URL + "/test", {
       method: "POST",
       body: JSON.stringify(req.body),
-      headers: req.headers,
+      headers: { ...req.headers, Authorization: `Bearer ${token}` },
     });
     let type = r.status == 200 ? "success" : "error";
     let message = await r.json();
@@ -35,3 +39,16 @@ export default async (req, res) => {
       .json({ type: "error", message: "Must be a GET or POST request" });
   }
 };
+
+async function getGoogleToken() {
+  const metadataServerTokenURL =
+    "http://metadata/computeMetadata/v1/instance/service-accounts/default/identity?audience=";
+
+  const token = await fetch(metadataServerTokenURL + API_URL, {
+    headers: {
+      "Metadata-Flavor": "Google",
+    },
+  });
+
+  return token;
+}
