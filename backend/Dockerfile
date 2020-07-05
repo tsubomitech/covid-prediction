@@ -1,4 +1,4 @@
-FROM maven:3.2-jdk-8 as maven
+FROM maven:3.6.3-jdk-8 as maven
 COPY . /app/
 WORKDIR /app
 RUN mvn compile && mvn package
