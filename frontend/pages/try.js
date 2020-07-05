@@ -129,7 +129,7 @@ export default function Try() {
   if (response.type === "error") {
     output = <div style={{ color: "red" }}>{response.message}</div>;
   } else {
-    output = <div style={{ color: "green" }}><pre>{response.message}</pre></div>;
+    output = <div style={{ color: "black" }}><pre>{response.message}</pre></div>;
   }
   const classes = useStyles();
   return (
@@ -182,6 +182,7 @@ export default function Try() {
                     <Chip
                       key={"chip__" + value}
                       label={value}
+                      color="secondary"
                       className={classes.chip}
                     />
                   ))}
@@ -190,14 +191,14 @@ export default function Try() {
               MenuProps={MenuProps}
             >
               {models.list.map((model) => (
-                <MenuItem key={"item__" + model} value={model}>
+                <MenuItem key={"item__" + model} value={model} color="secondary">
                   {model}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
           <br />
-          <Button type="submit">Submit</Button>
+          <Button type="submit" variant="contained" color="primary">Submit</Button>
           <div>{output}</div>
         </fieldset>
       </form>

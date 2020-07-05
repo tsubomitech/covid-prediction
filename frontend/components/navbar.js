@@ -1,6 +1,7 @@
 import Link from "./link";
 import { Container, Typography, makeStyles } from "@material-ui/core";
 import theme from './theme'
+import { teal } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -11,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
-    color: 'teal',
+    color: theme.palette.primary,
   },
   subtitle: {
     color: theme.palette.text.secondary,
