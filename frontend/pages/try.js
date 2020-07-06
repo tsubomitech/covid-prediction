@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Select from "@material-ui/core/Select";
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
+import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 
 import {
   FormControl,
@@ -11,6 +11,7 @@ import {
   Chip,
   Input,
   TextField,
+  CircularProgress,
 } from "@material-ui/core";
 import Layout from "../components/layout";
 
@@ -67,15 +68,20 @@ export default function Try() {
     selected: ["GLM_1_AutoML_20200608_155614"],
   });
 
+  const [isSelectBoxLoading, setSelectBoxLoading] = useState(false);
+  const [isFormSubmitLoading, setFormSubmitLoading] = useState(false);
+
   const fetchModels = async () => {
+    setSelectBoxLoading(true);
     const res = await fetch(API_URL, { method: "GET" });
     const json = await res.json();
     if (json.type === "success") {
       setModels({ ...models, list: json.message });
+      setSelectBoxLoading(false);
     } else {
       console.error(json);
     }
-  }
+  };
 
   useEffect(() => {
     fetchModels();
@@ -92,6 +98,7 @@ export default function Try() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setFormSubmitLoading(true);
       const promises = await Promise.all(
         models.selected.map((model) =>
           fetch(API_URL, {
@@ -109,7 +116,7 @@ export default function Try() {
       for (let i = 0; i < promises.length; i++) {
         const json = await promises[i].json();
         if (json.type === "success") {
-          responses.push({model: models.selected[i], results: json.message});
+          responses.push({ model: models.selected[i], results: json.message });
         } else {
           setResponse({
             type: "error",
@@ -117,7 +124,10 @@ export default function Try() {
           });
         }
       }
-      setResponse({ type: "success", message: JSON.stringify(responses, null, 2) });
+      setResponse({
+        type: "success",
+        message: JSON.stringify(responses, null, 2),
+      });
     } catch (e) {
       console.log("An error occurred", e);
       setResponse({
@@ -125,13 +135,18 @@ export default function Try() {
         message: "An error occured while submitting the form",
       });
     }
+    setFormSubmitLoading(false);
   };
 
   let output = null;
   if (response.type === "error") {
     output = <div style={{ color: "red" }}>{response.message}</div>;
   } else {
-    output = <div style={{ color: "black" }}><pre>{response.message}</pre></div>;
+    output = (
+      <div style={{ color: "black" }}>
+        <pre>{response.message}</pre>
+      </div>
+    );
   }
   const classes = useStyles();
   return (
@@ -172,6 +187,7 @@ export default function Try() {
             <Select
               labelId="models-label"
               id="models-chip"
+              disabled={isSelectBoxLoading}
               multiple
               value={models.selected}
               onChange={(e) =>
@@ -193,14 +209,29 @@ export default function Try() {
               MenuProps={MenuProps}
             >
               {models.list.map((model) => (
-                <MenuItem key={"item__" + model} value={model} color="secondary">
+                <MenuItem
+                  key={"item__" + model}
+                  value={model}
+                  color="secondary"
+                >
                   {model}
                 </MenuItem>
               ))}
             </Select>
+            {isSelectBoxLoading ? <CircularProgress color="secondary"/> : null}
           </FormControl>
           <br />
-          <Button type="submit" size="large" startIcon={<ArrowUpwardIcon />} variant="contained" color="primary">Submit</Button>
+          <Button
+            type="submit"
+            size="large"
+            startIcon={<ArrowUpwardIcon />}
+            variant="contained"
+            color="primary"
+            disabled={isFormSubmitLoading}
+          >
+            Submit
+          </Button>
+          {isFormSubmitLoading ? <CircularProgress color="primary"/> : null}
           <div>{output}</div>
         </fieldset>
       </form>
