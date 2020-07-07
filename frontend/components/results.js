@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useState } from "react";
+import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from "victory";
 
 const useStyles = makeStyles({
   table: {
@@ -59,13 +60,40 @@ function ResultsTabs(props) {
           aria-label="simple tabs example"
         >
           <Tab label="Table" {...a11yProps(0)} />
-          <Tab label="API Response" {...a11yProps(1)} />
+          <Tab label="Bar Chart" {...a11yProps(1)} />
+          <Tab label="API Response" {...a11yProps(2)} />
         </Tabs>
       </AppBar>
       <TabPanel value={tab} index={0}>
         <ResultsTable rows={props.rows} />
       </TabPanel>
       <TabPanel value={tab} index={1}>
+      <VictoryChart
+        theme={VictoryTheme.material}
+        domainPadding={20}
+      >
+        <VictoryAxis
+          // tickValues specifies both the number of ticks and where
+          // they are placed on the axis
+          tickValues={props.rows.map((_, i) => i+1)}
+          tickFormat={props.rows.map(r => r.name.slice(0,10))}
+          style={{}}
+        />
+        <VictoryAxis
+          dependentAxis
+          // tickFormat specifies how ticks should be displayed
+          tickFormat={(x) => (`${x} %`)}
+        />
+        <VictoryBar
+          style={{ data: { fill: "gold" } }}
+          alignment="start"
+          // x="Models"
+          // y="% chance of survival"
+          data={props.rows.map((r, i) => ({x: i, y: parseFloat(r.chance)}))}
+        />
+      </VictoryChart>
+      </TabPanel>
+      <TabPanel value={tab} index={2}>
         <pre>{props.payload}</pre>
       </TabPanel>
     </div>
