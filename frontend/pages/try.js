@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Select from "@material-ui/core/Select";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
+import Results from "../components/results";
 
 import {
   FormControl,
@@ -91,7 +92,7 @@ export default function Try() {
 
   const [response, setResponse] = useState({
     type: "success",
-    message: "Click submit to get some probabilities...",
+    message: "",
   });
 
   const handleChange = (e) =>
@@ -143,11 +144,10 @@ export default function Try() {
   let output = null;
   if (response.type === "error") {
     output = <div style={{ color: "red" }}>{response.message}</div>;
-  } else {
+  } else if (response.message) {
+
     output = (
-      <div style={{ color: "black" }}>
-        <pre>{response.message}</pre>
-      </div>
+      <Results payload={response.message}/>
     );
   }
   const classes = useStyles();
@@ -219,21 +219,20 @@ export default function Try() {
                 </MenuItem>
               ))}
             </Select>
-            {isSelectBoxLoading ? <CircularProgress color="secondary"/> : null}
-
+            {isSelectBoxLoading ? <CircularProgress color="secondary" /> : null}
           </FormControl>
           <FormControlLabel
-        control={
-          <Checkbox
-            required
-            checked={disclaimerChecked}
-            onChange={() => setDisclaimerChecked(!disclaimerChecked)}
-            name="disclaimerChecked"
-            color="secondary"
+            control={
+              <Checkbox
+                required
+                checked={disclaimerChecked}
+                onChange={() => setDisclaimerChecked(!disclaimerChecked)}
+                name="disclaimerChecked"
+                color="secondary"
+              />
+            }
+            label="I understand that this app is only for educational purpose and not for diagnosis."
           />
-        }
-        label="I understand that this app is only for educational purpose and not for diagnosis."
-      />
           <br />
           <Button
             type="submit"
@@ -245,7 +244,7 @@ export default function Try() {
           >
             Submit
           </Button>
-          {isFormSubmitLoading ? <CircularProgress color="primary"/> : null}
+          {isFormSubmitLoading ? <CircularProgress color="primary" /> : null}
           <div>{output}</div>
         </fieldset>
       </form>
