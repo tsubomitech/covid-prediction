@@ -12,6 +12,8 @@ import {
   Input,
   TextField,
   CircularProgress,
+  FormControlLabel,
+  Checkbox,
 } from "@material-ui/core";
 import Layout from "../components/layout";
 
@@ -29,8 +31,7 @@ const MenuProps = {
 const useStyles = makeStyles((theme) => ({
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
-    maxWidth: 300,
+    width: "100%",
   },
   chips: {
     display: "flex",
@@ -70,6 +71,7 @@ export default function Try() {
 
   const [isSelectBoxLoading, setSelectBoxLoading] = useState(false);
   const [isFormSubmitLoading, setFormSubmitLoading] = useState(false);
+  const [disclaimerChecked, setDisclaimerChecked] = useState(false);
 
   const fetchModels = async () => {
     setSelectBoxLoading(true);
@@ -176,9 +178,8 @@ export default function Try() {
               step="0.01"
               value={formFields[f]}
               onChange={handleChange}
-              style={{ margin: "5px" }}
+              style={{ margin: "5px", width: "auto" }}
               // helperText="Enter a number"
-              required
             />
           ))}
           <br />
@@ -219,7 +220,20 @@ export default function Try() {
               ))}
             </Select>
             {isSelectBoxLoading ? <CircularProgress color="secondary"/> : null}
+
           </FormControl>
+          <FormControlLabel
+        control={
+          <Checkbox
+            required
+            checked={disclaimerChecked}
+            onChange={() => setDisclaimerChecked(!disclaimerChecked)}
+            name="disclaimerChecked"
+            color="secondary"
+          />
+        }
+        label="I understand that this app is only for educational purpose and not for diagnosis."
+      />
           <br />
           <Button
             type="submit"
