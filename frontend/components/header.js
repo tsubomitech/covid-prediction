@@ -24,6 +24,17 @@ export default function Header() {
       {/* <script src="https://dohliam.github.io/dropin-minimal-css/switcher.js" type="text/javascript"></script> */}
       {/* <link rel="stylesheet" href="https://dohliam.github.io/dropin-minimal-css/min/tacit.min.css"/> */}
       <meta name="theme-color" content={theme.palette.primary.main} />
+      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-62804886-2"></script>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'UA-62804886-2');
+          `
+        }}
+      />
     </Head>
   );
 }
