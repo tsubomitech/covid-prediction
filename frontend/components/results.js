@@ -142,7 +142,7 @@ export default function Results(props) {
     const modelResults = JSON.parse(props.payload);
     rows = modelResults.map((m) => ({
       name: m.model,
-      chance: `${(m.results["probability1"] * 100).toFixed(2)} %`,
+      chance: `${(m.results["probability0"] * 100).toFixed(2)} %`,
     }));
   } catch (e) {
     console.error("ERR - could not parse json")
