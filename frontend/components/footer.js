@@ -27,7 +27,7 @@ export default function Footer() {
         <Typography variant="body2" color="textSecondary" align="center">
           {"Copyright © "}
           <Link color="inherit" href="/">
-            Kenji
+            {process.env.NEXT_PUBLIC_APP_NAME}
           </Link>{" "}
           {new Date().getFullYear()}
         </Typography>
