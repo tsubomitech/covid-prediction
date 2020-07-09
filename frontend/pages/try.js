@@ -153,7 +153,8 @@ export default function Try() {
   const classes = useStyles();
   return (
     <Layout>
-      <h1>Try</h1>
+      <h1>Prediction API</h1>
+      <p>Enter patient metrics below and the API will attempt to predict the patient's chance of survival</p>
       <form action="{API_URL}" method="post" onSubmit={handleSubmit}>
         <fieldset id="forms__input">
           <legend>input parameters</legend>
