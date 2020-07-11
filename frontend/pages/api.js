@@ -22,8 +22,13 @@ export default async (req, res) => {
       },
     });
     let type = r.status == 200 ? "success" : "error";
-    let message = await r.json();
-    res.status(r.status).json({ type, message });
+    try {
+      let message = await r.json();
+      res.status(r.status).json({ type, message });
+    } catch (e) {
+      console.error(e);
+      res.status(r.status).json({ type, message: "Failed to parse json" })
+    }
   } else if (req.method === "POST") {
     const r = await fetch(API_URL + "/test", {
       method: "POST",
@@ -53,6 +58,8 @@ async function getGoogleToken() {
       "Metadata-Flavor": "Google",
     },
   });
+
+  console.info("Google token:", token);
 
   return token;
 }

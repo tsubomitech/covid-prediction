@@ -36,6 +36,8 @@ curl -X POST localhost:8080/test \
 * DNS CNAME record for covid.saada.dev -> ghs.googlehosted.com.
 * Setup domain mapping for UI service -> covid.saada.dev
 * Create bucket called 'jib-cache' in us-central1
+* Setup Cloud Scheduler job to talk to prediction api public url using service account on /models
+
 ## Contributor Notes
 
 ```sh
