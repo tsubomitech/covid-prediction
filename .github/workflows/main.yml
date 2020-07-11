@@ -54,8 +54,8 @@ jobs:
       run: |-
         gcloud config set builds/use_kaniko True
         gcloud builds submit \
-          --config backend/cloudbuild.yaml
-          --substitutions=_IMAGE_NAME="$API_SERVICE_NAME",_COMMIT_SHA="$GITHUB_SHA"
+          --config backend/cloudbuild.yaml \
+          --substitutions=_IMAGE_NAME="$API_SERVICE_NAME",_COMMIT_SHA="$GITHUB_SHA" \
           --tag "gcr.io/$PROJECT_ID/$API_SERVICE_NAME:$GITHUB_SHA" \
           backend
   deploy-ui:
