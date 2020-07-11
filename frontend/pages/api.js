@@ -53,12 +53,16 @@ async function getGoogleToken() {
   const metadataServerTokenURL =
     "http://metadata/computeMetadata/v1/instance/service-accounts/default/identity?audience=";
 
-  const token = await fetch(metadataServerTokenURL + API_URL, {
+  const res = await fetch(metadataServerTokenURL + API_URL, {
     headers: {
       "Metadata-Flavor": "Google",
     },
   });
+  if (res.status != 200) {
+    throw new Error(res.text());
+  }
 
+  const token = res.text();
   console.info("Google token:", token);
 
   return token;
