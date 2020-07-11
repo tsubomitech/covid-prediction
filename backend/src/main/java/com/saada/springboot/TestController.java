@@ -15,6 +15,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,18 +28,29 @@ import hex.genmodel.*;
 import hex.genmodel.easy.EasyPredictModelWrapper;
 import hex.genmodel.easy.RowData;
 import hex.genmodel.easy.prediction.BinomialModelPrediction;
+import hex.genmodel.easy.exception.PredictException;
 
 @RestController
 public class TestController {
 
+    private static HashMap<String, EasyPredictModelWrapper> cachedModels = new HashMap<String, EasyPredictModelWrapper>();
     @GetMapping("/models")
-    public ResponseEntity<String[]> listModels() throws IOException {
+    public ResponseEntity<String[]> listModels() throws Exception {
         String[] filenames = Files
             .list(Paths.get("src/main/resources/com/saada/springboot"))
             .filter(Files::isRegularFile)
-            .map(p -> p.getFileName().toString())
-            .filter(name -> name.endsWith(".zip"))
-            .map(f -> f.replace(".zip", ""))
+            .map(file -> file.getFileName().toString())
+            .filter(filename -> filename.endsWith(".zip"))
+            .map(filename -> filename.replace(".zip", ""))
+            .map(filename -> {
+                // warmup model
+                try {
+                    getCachedModel(filename);
+                } catch (IOException e) {
+                    System.err.println(e.getMessage());
+                }
+                return filename;
+            })
             .toArray(String[]::new);
         System.out.println(filenames);
 
@@ -55,16 +67,23 @@ public class TestController {
         return execute(row, model);
     }
 
-    public Response execute(RowData row, String model) throws Exception {
+    private EasyPredictModelWrapper getCachedModel(String model) throws IOException {
+        if (cachedModels.containsKey(model)) {
+            return cachedModels.get(model);
+        }
         URL mojoURL = TestController.class.getResource(model + ".zip");
         MojoReaderBackend reader = MojoReaderBackendFactory.createReaderBackend(mojoURL,
                 MojoReaderBackendFactory.CachingStrategy.MEMORY);
         MojoModel mojoModel = ModelMojoReader.readFrom(reader);
         EasyPredictModelWrapper modelWrapper = new EasyPredictModelWrapper(mojoModel);
+        // add to cache
+        cachedModels.put(model, modelWrapper);
+        return modelWrapper;
+    }
 
+    public Response execute(RowData row, String model) throws IOException, PredictException {
         System.out.println(row);
-        BinomialModelPrediction prediction = modelWrapper.predictBinomial(row);
-
+        BinomialModelPrediction prediction = getCachedModel(model).predictBinomial(row);
         Response res = new Response();
         res.probability0 = prediction.classProbabilities[0];
         res.probability1 = prediction.classProbabilities[1];
