@@ -63,7 +63,7 @@ async function getGoogleToken() {
     throw new Error(res.text());
   }
 
-  const token = res.text();
+  const token = await res.text();
   console.info("Google token:", token);
 
   return token;
