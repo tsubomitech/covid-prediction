@@ -37,10 +37,11 @@ jobs:
         project_id: ${{ secrets.RUN_PROJECT }}
     - name: Build UI
       run: |-
+        cd frontend
         gcloud config set builds/use_kaniko True
         gcloud builds submit \
           --tag "gcr.io/$PROJECT_ID/$UI_SERVICE_NAME:$GITHUB_SHA" \
-          frontend
+          .
   build-api:
     runs-on: ubuntu-latest
     steps:
@@ -52,11 +53,12 @@ jobs:
         project_id: ${{ secrets.RUN_PROJECT }}
     - name: Build API
       run: |-
+        cd backend
         gcloud config set builds/use_kaniko True
         gcloud builds submit \
           --config backend/cloudbuild.yaml \
           --substitutions=_IMAGE_NAME="$API_SERVICE_NAME",_COMMIT_SHA="$GITHUB_SHA" \
-          backend
+          .
   deploy-ui:
     needs: build-ui
     runs-on: ubuntu-latest
