@@ -26,6 +26,7 @@ export default async (req, res) => {
       let message = await r.json();
       res.status(r.status).json({ type, message });
     } catch (e) {
+      console.error(r.text());
       console.error(e);
       res.status(r.status).json({ type, message: "Failed to parse json" })
     }
