@@ -54,7 +54,8 @@ jobs:
     - name: Build API
       run: |-
         cd backend
-        gcloud config set builds/use_kaniko True
+        # using jib means we don't need docker layer caching
+        gcloud config set builds/use_kaniko False
         gcloud builds submit \
           --config ./cloudbuild.yaml \
           --substitutions=_IMAGE_NAME="$API_SERVICE_NAME",_COMMIT_SHA="$GITHUB_SHA" \

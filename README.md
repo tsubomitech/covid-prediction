@@ -35,7 +35,7 @@ curl -X POST localhost:8080/test \
 * Service account permissions are setup based on [tutorial](https://github.com/GoogleCloudPlatform/github-actions/tree/master/example-workflows/cloud-run)
 * DNS CNAME record for covid.saada.dev -> ghs.googlehosted.com.
 * Setup domain mapping for UI service -> covid.saada.dev
-
+* Create bucket called 'jib-cache' in us-central1
 ## Contributor Notes
 
 ```sh
