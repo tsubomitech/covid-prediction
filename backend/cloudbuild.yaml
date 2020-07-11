@@ -22,6 +22,7 @@ steps:
 
 - # Uses the Cloud Builder Maven image.
   name: gcr.io/cloud-builders/mvn
+  dir: backend
   args:
   # Compiles the application.
   - compile
