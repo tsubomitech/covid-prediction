@@ -6,13 +6,16 @@ name: CI
 on:
   push:
     branches: [ master ]
-    paths-ignore: &pathsignored
+    paths-ignore:
       - '**.md'
       - '.gitignore'
       - 'Makefile'
   pull_request:
     branches: [ master ]
-    paths-ignore: *pathsignored
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - 'Makefile'
 
 env:
   PROJECT_ID: ${{ secrets.RUN_PROJECT }}
