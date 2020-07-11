@@ -36,11 +36,11 @@ import hex.genmodel.easy.exception.PredictException;
 public class TestController {
     Logger logger = LoggerFactory.getLogger(this.getClass());
     static HashMap<String, EasyPredictModelWrapper> cachedModels = new HashMap<String, EasyPredictModelWrapper>();
-
+    static final String MODEL_PATH = "models";
     @GetMapping("/models")
     public ResponseEntity<String[]> listModels() throws Exception {
         String[] filenames = Files
-            .list(Paths.get("models"))
+            .list(Paths.get(MODEL_PATH))
             .filter(Files::isRegularFile)
             .map(file -> file.getFileName().toString())
             .filter(filename -> filename.endsWith(".zip"))
@@ -75,7 +75,7 @@ public class TestController {
             logger.info("found cached model: " + model);
             return cachedModels.get(model);
         }
-        URL mojoURL = this.getClass().getResource(model + ".zip");
+        URL mojoURL = new URL("file:///"+MODEL_PATH+"/"+ model + ".zip");
         MojoReaderBackend reader = MojoReaderBackendFactory.createReaderBackend(mojoURL,
                 MojoReaderBackendFactory.CachingStrategy.MEMORY);
         MojoModel mojoModel = ModelMojoReader.readFrom(reader);
