@@ -29,7 +29,6 @@ export default function Footer() {
           <Link color="inherit" href="/">
             {process.env.NEXT_PUBLIC_APP_NAME}
           </Link>{" "}
-          {" - Montefiore Medical Center "}
           {new Date().getFullYear()}
         </Typography>
       </Grid>
