@@ -10,6 +10,7 @@ Inspird by [mojo-resource](https://github.com/h2oai/h2o-tutorials/tree/master/tu
 ## Run
 
 ```sh
+brew install maven
 # run or restart frontend and backend
 make docker
 

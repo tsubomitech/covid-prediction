@@ -47,10 +47,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const API_URL = "/api";
-// {"systolicBP": 120, "diastolicBP": 60, "age": 50, "bun": 7, "ldh": 140, "pulseOx": 98, "cr": 0.9, "Charlson_Score": 3, "troponin": 0.5, "ddimer": 1.5}
+// {"systolicBP": 120, "diastolicBP": 60, "age": 50, "bun": 7, "ldh": 140, "pulseOx": 98, "cr": 0.9, "charlson_Score": 3, "troponin": 0.5, "ddimer": 1.5}
 async function getModels() {}
 
 export default function Try() {
+  // the below variables have to start with lowercase character for API to work
   const [formFields, setFormFields] = useState({
     systolicBP: 120,
     diastolicBP: 60,
@@ -59,7 +60,7 @@ export default function Try() {
     ldh: 140,
     pulseOx: 98,
     cr: 0.9,
-    Charlson_Score: 3,
+    charlson_Score: 3,
     troponin: 0.5,
     ddimer: 1.5,
   });
