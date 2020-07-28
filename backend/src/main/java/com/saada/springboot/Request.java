@@ -20,8 +20,8 @@ public class Request {
     public void setAge(String value) {
         this.age = Double.valueOf(value);
     }
-    public void setBUN(String value) {
-        this.BUN = Double.valueOf(value);
+    public void setBun(String value) {
+        this.bun = Double.valueOf(value);
     }
     public void setLdh(String value) {
         this.ldh = Double.valueOf(value);
