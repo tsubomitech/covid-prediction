@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const API_URL = "/api";
-// {"systolicBP": 120, "diastolicBP": 60, "age": 50, "bun": 7, "LDH": 140, "pulseOx": 98, "cr": 0.9, "Charlson_Score": 3, "troponin": 0.5, "ddimer": 1.5}
+// {"systolicBP": 120, "diastolicBP": 60, "age": 50, "bun": 7, "ldh": 140, "pulseOx": 98, "cr": 0.9, "Charlson_Score": 3, "troponin": 0.5, "ddimer": 1.5}
 async function getModels() {}
 
 export default function Try() {
@@ -56,7 +56,7 @@ export default function Try() {
     diastolicBP: 60,
     age: 50,
     bun: 7,
-    LDH: 140,
+    ldh: 140,
     pulseOx: 98,
     cr: 0.9,
     Charlson_score: 3,
