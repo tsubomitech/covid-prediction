@@ -26,8 +26,8 @@ public class Request {
     public void setLdh(String value) {
         this.ldh = Double.valueOf(value);
     }
-    public void setpulseOx(String value) {
-        this.PulseOx = Double.valueOf(value);
+    public void setPulseOx(String value) {
+        this.pulseOx = Double.valueOf(value);
     }
     public void setCr(String value) {
         this.cr = Double.valueOf(value);
