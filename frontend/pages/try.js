@@ -67,7 +67,7 @@ export default function Try() {
 
   const [models, setModels] = useState({
     list: [],
-    selected: ["GLM_1_AutoML_20200608_155614"],
+    selected: ["GBM_7_24_2020"],
   });
 
   const [isSelectBoxLoading, setSelectBoxLoading] = useState(false);
