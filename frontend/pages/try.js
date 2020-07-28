@@ -59,7 +59,7 @@ export default function Try() {
     ldh: 140,
     pulseOx: 98,
     cr: 0.9,
-    Charlson_score: 3,
+    Charlson_Score: 3,
     troponin: 0.5,
     ddimer: 1.5,
   });
