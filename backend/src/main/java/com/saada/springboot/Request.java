@@ -43,6 +43,6 @@ public class Request {
     }
 
     public String toString() {
-        return "MAP: " + this.MAP + " ldh: " + this.ldh;
+        return "systolicBP: " + this.systolicBP + " ldh: " + this.ldh;
     }
 }
