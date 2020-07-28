@@ -1,5 +1,7 @@
 # README
 
+![CI](https://github.com/saada/kenji-mojo-api/workflows/CI/badge.svg)
+
 Inspird by [mojo-resource](https://github.com/h2oai/h2o-tutorials/tree/master/tutorials/mojo-resource).
 
 ## Dependencies
