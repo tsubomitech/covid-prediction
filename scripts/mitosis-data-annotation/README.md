@@ -6,7 +6,7 @@
 
 ## Run
 
-We assume the directory passed has files formatted like in `./sampleinput` with an output directory in the format of `./sampleoutput`
+We assume the directory passed has files formatted like in `./samples/input` with an output directory in the format of `./samples/output`
 
 ```sh
 python3 convert.py <INPUT_DIRECTORY> <OUTPUT_DIRECTORY>
