@@ -59,15 +59,15 @@ export default function Try() {
     bun: 7,
     ldh: 140,
     pulseOx: 98,
-    cr: 0.9,
-    charlson_Score: 3,
+    glucose: 100,
+    RespiratoryRate: 3,
     troponin: 0.5,
     ddimer: 1.5,
   });
 
   const [models, setModels] = useState({
     list: [],
-    selected: ["GBM_7_24_2020"],
+    selected: ["GBM"],
   });
 
   const [isSelectBoxLoading, setSelectBoxLoading] = useState(false);
