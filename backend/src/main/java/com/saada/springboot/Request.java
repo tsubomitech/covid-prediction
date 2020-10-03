@@ -8,7 +8,7 @@ public class Request {
     Double ldh;
     Double pulseOx;
     Double glucose;
-    Double RespiratoryRate;
+    Double rr;
     Double troponin;
     Double ddimer;
     public void setSystolicBP(String value) {
@@ -32,8 +32,8 @@ public class Request {
     public void setGlucose(String value) {
         this.glucose = Double.valueOf(value);
     }
-    public void setRespiratoryRate(String value) {
-        this.RespiratoryRate = Double.valueOf(value);
+    public void setRr(String value) {
+        this.rr = Double.valueOf(value);
     }
     public void setTroponin(String value) {
         this.troponin = Double.valueOf(value);

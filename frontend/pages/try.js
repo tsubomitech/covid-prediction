@@ -60,7 +60,7 @@ export default function Try() {
     ldh: 140,
     pulseOx: 98,
     glucose: 100,
-    RespiratoryRate: 10,
+    rr: 10,
     troponin: 0.5,
     ddimer: 1.5,
   });
