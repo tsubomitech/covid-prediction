@@ -34,7 +34,7 @@ def convert_csv_to_txt(input, output):
         y = float(row[1])
         score = float(row[2])
         mitosisExists = "0" # if score > 0.5 else "1"
-        w.writerow([mitosisExists, x/1539, y/1376,0.05,0.05])
+        w.writerow([mitosisExists, x/1663, y/1485,0.05,0.05]) #For Aperio x = 1539 y= 1376. For Hamamatsu x = 1663 y = 1485""
 
 def convert_tiff_to_jpg(input, output):
   with subprocess.Popen(['sips', '-s', 'format', 'jpeg', input, '--out',output], stdout=subprocess.PIPE, stderr=subprocess.PIPE) as proc:
