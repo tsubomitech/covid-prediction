@@ -41,6 +41,9 @@ curl -X POST localhost:8080/test \
 * Create bucket called 'jib-cache' in us-central1
 * Setup Cloud Scheduler job to talk to prediction api public url using service account on /models
 
+## Note
+Need to make parameters accept float. Currently it only takes integers or 0.5 for troponin and ddimer. 
+
 ## Contributor Notes
 
 ```sh
