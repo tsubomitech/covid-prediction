@@ -4,13 +4,13 @@ import auth from "basic-auth";
 const API_URL = process.env.API_URL || "http://localhost:8080";
 
 export default async (req, res) => {
-  var user = auth(req);
-  if (user?.name !== "admin" || user?.pass !== "K3nji") {
-    res.setHeader("WWW-Authenticate", 'Basic realm="private"');
-    res.status(401);
-    res.json({});
-    return;
-  }
+  // var user = auth(req);
+  // if (user?.name !== "admin" || user?.pass !== "K3nji") {
+  //   res.setHeader("WWW-Authenticate", 'Basic realm="private"');
+  //   res.status(401);
+  //   res.json({});
+  //   return;
+  // }
 
   const token = process.env.GOOGLE_CLOUD_RUN ? await getGoogleToken() : null;
   if (req.method === "GET") {
@@ -28,7 +28,7 @@ export default async (req, res) => {
     } catch (e) {
       console.error(r.text());
       console.error(e);
-      res.status(r.status).json({ type, message: "Failed to parse json" })
+      res.status(r.status).json({ type, message: "Failed to parse json" });
     }
   } else if (req.method === "POST") {
     const r = await fetch(API_URL + "/test", {
