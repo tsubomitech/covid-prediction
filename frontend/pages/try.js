@@ -160,11 +160,8 @@ export default function Try() {
           <TextField
             key={f}
             id={"input__" + f}
-            required
             name={f}
             label={f}
-            type="number"
-            step="0.01"
             value={formFields[f]}
             onChange={handleChange}
             style={{ margin: "5px", width: "auto" }}
