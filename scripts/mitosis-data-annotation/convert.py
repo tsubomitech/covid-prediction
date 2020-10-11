@@ -6,6 +6,7 @@ Mitosis Data Annotation
 We need to format the annotation as following to run the YOLOv4:
 - Put "0" in front of the annotation if mitosis exists.
 - Divided the x coordinate by 1539 and y coordinate by 1376 so that we give the coordinate in ratios.
+- For Aperio x = 1539 y= 1376. For Hamamatsu x = 1663 y = 1485
 - Delete the pathologist's confidence score. (These are all high confidence score)
 - Add 0.05 0.05 to inform the bounding box size that goes around the mitosis.
 
@@ -34,7 +35,7 @@ def convert_csv_to_txt(input, output):
         y = float(row[1])
         score = float(row[2])
         mitosisExists = "0" # if score > 0.5 else "1"
-        w.writerow([mitosisExists, x/1663, y/1485,0.05,0.05]) #For Aperio x = 1539 y= 1376. For Hamamatsu x = 1663 y = 1485""
+        w.writerow([mitosisExists, x/1663, y/1485,0.05,0.05]) #For Aperio x = 1539 y= 1376. For Hamamatsu x = 1663 y = 1485
 
 def convert_tiff_to_jpg(input, output):
   with subprocess.Popen(['sips', '-s', 'format', 'jpeg', input, '--out',output], stdout=subprocess.PIPE, stderr=subprocess.PIPE) as proc:
