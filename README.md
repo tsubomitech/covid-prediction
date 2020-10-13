@@ -6,8 +6,8 @@ Inspird by [mojo-resource](https://github.com/h2oai/h2o-tutorials/tree/master/tu
 
 ## Dependencies
 
-* [Nodejs](https://nodejs.org/en/)
-* [Docker for Desktop](https://www.docker.com/products/docker-desktop)
+- [Nodejs](https://nodejs.org/en/)
+- [Docker for Desktop](https://www.docker.com/products/docker-desktop)
 
 ## Run
 
@@ -22,7 +22,7 @@ make docker
 make docker-cleanup
 ```
 
-##  Test
+## Test
 
 ```sh
 # properties have to start with lowercase and match setters
@@ -34,15 +34,16 @@ curl -X POST localhost:8080/test \
 
 ## Infrastructure
 
-* Google CloudRun
-* Service account permissions are setup based on [tutorial](https://github.com/GoogleCloudPlatform/github-actions/tree/master/example-workflows/cloud-run)
-* DNS CNAME record for covid.saada.dev -> ghs.googlehosted.com.
-* Setup domain mapping for UI service -> covid.saada.dev
-* Create bucket called 'jib-cache' in us-central1
-* Setup Cloud Scheduler job to talk to prediction api public url using service account on /models
+- Google CloudRun
+- Service account permissions are setup based on [tutorial](https://github.com/GoogleCloudPlatform/github-actions/tree/master/example-workflows/cloud-run)
+- DNS CNAME record for covid.saada.dev -> ghs.googlehosted.com.
+- Setup domain mapping for UI service -> covid.saada.dev
+- Create bucket called 'jib-cache' in us-central1
+- Setup Cloud Scheduler job to talk to prediction api public url using service account on /models
 
-## ToDo
-Need to make parameters accept float. Currently it only takes integers or 0.5 for troponin and ddimer. 
+## Note
+
+Need to make parameters accept float. Currently it only takes integers or 0.5 for troponin and ddimer.
 
 ## Contributor Notes
 
