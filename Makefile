@@ -32,3 +32,4 @@ docker-cleanup:
 
 deploy-vercel:
 	cd frontend && npx vercel
+
