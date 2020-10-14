@@ -5,7 +5,7 @@ const API_URL = process.env.API_URL || "http://localhost:8080";
 
 export default async (req, res) => {
    var user = auth(req);
-   if (user?.name !== "admin" || user?.pass !== "K3nji") {
+   if (user?.name !== "setHeader" || user?.pass !== "K3nji") {
      res.setHeader("WWW-Authenticate", 'Basic realm="private"');
      res.status(401);
      res.json({});
