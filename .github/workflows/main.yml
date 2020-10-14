@@ -54,6 +54,7 @@ jobs:
           gcloud builds submit \
             --tag "gcr.io/$PROJECT_ID/$UI_SERVICE_NAME:$GITHUB_SHA" \
             .
+
   build-api:
     runs-on: ubuntu-latest
     steps:
