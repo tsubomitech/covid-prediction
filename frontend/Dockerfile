@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:12x
 
 ENV PORT 3000
 ENV API_URL "http://covid-prediction-api:8080"
