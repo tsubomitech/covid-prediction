@@ -50,21 +50,21 @@ const API_URL = process.env.API_URL || "http://localhost:8080";
 //   }
 // };
 
-async function getGoogleToken() {
-  const metadataServerTokenURL =
-    "http://metadata/computeMetadata/v1/instance/service-accounts/default/identity?audience=";
+// async function getGoogleToken() {
+//   const metadataServerTokenURL =
+//     "http://metadata/computeMetadata/v1/instance/service-accounts/default/identity?audience=";
 
-  const res = await fetch(metadataServerTokenURL + API_URL, {
-    headers: {
-      "Metadata-Flavor": "Google",
-    },
-  });
-  if (res.status != 200) {
-    throw new Error(res.text());
-  }
+//   const res = await fetch(metadataServerTokenURL + API_URL, {
+//     headers: {
+//       "Metadata-Flavor": "Google",
+//     },
+//   });
+//   if (res.status != 200) {
+//     throw new Error(res.text());
+//   }
 
-  const token = await res.text();
-  console.info("Google token:", token);
+//   const token = await res.text();
+//   console.info("Google token:", token);
 
-  return token;
-}
+//   return token;
+// }
