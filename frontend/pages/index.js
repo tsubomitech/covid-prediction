@@ -20,7 +20,7 @@ export default function Home() {
     <Layout>
       <Grid container item spacing={2}>
         <Grid item xs={12} sm={6}>
-          <Link href="https://www.medrxiv.org/content/10.1101/2020.10.12.20211086v1">
+          <Link href="https://pubmed.ncbi.nlm.nih.gov/33539308/">
             <Paper className={classes.paper}>
               <h3>Publication &rarr;</h3>
               <p>Read more about the research</p>
