@@ -7,7 +7,7 @@ public class Request {
     Double bun;
     Double ldh;
     Double pulseOx;
-    Double glucose;
+    Double charlson_score;
     Double rr;
     Double troponin;
     Double ddimer;
@@ -29,8 +29,8 @@ public class Request {
     public void setPulseOx(String value) {
         this.pulseOx = Double.valueOf(value);
     }
-    public void setGlucose(String value) {
-        this.glucose = Double.valueOf(value);
+    public void setCharlson_score(String value) {
+        this.charlson_score = Double.valueOf(value);
     }
     public void setRr(String value) {
         this.rr = Double.valueOf(value);
