@@ -29,7 +29,7 @@ make docker-cleanup
 curl -X POST localhost:8080/test \
     -H 'x-model: GLM_1_AutoML_20200608_155614' \
     -H 'Content-Type: application/json' \
-    -d '{"systolicBP": 120, "diastolicBP": 60, "age": 50, "bun": 7, "ldh": 140, "pulseOx": 98, "glucose": 100, "ResipratoryRate": 10, "troponin": 0.5, "ddimer": 1.5}'
+    -d '{"systolicBP": 120, "diastolicBP": 60, "age": 50, "bun": 7, "ldh": 140, "pulseOx": 98, "charlson_score": 2, "ResipratoryRate": 10, "troponin": 0.5, "ddimer": 1.5}'
 ```
 
 ## Infrastructure
