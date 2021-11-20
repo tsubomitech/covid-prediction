@@ -1,6 +1,6 @@
-import Link from "../components/link";
-import Layout from "../components/layout";
-import { makeStyles, Grid, Paper } from "@material-ui/core";
+import Link from "../components/link"
+import Layout from "../components/layout"
+import { makeStyles, Grid, Paper } from "@material-ui/core"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -11,10 +11,10 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     // color: theme.palette.text.secondary,
   },
-}));
+}))
 
 export default function Home() {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <Layout>
@@ -36,10 +36,10 @@ export default function Home() {
           </Link>
         </Grid>
         <Grid item xs={12} sm={6}>
-          <Link href="" className="card">
+          <Link href="/dataset.csv" className="card">
             <Paper className={classes.paper}>
-              <h3>News &rarr;</h3>
-              <p>Latest Updates</p>
+              <h3>Dataset &rarr;</h3>
+              <p>Download anonymized dataset</p>
             </Paper>
           </Link>
         </Grid>
@@ -53,5 +53,5 @@ export default function Home() {
         </Grid>
       </Grid>
     </Layout>
-  );
+  )
 }
