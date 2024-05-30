@@ -42,7 +42,7 @@ jobs:
       - uses: google-github-actions/setup-gcloud@v2.1.0
         if: steps.filter.outputs.frontend == 'true'
         with:
-          version: "299.0.0"
+          version: ">= 363.0.0"
           service_account_key: ${{ secrets.RUN_SA_KEY }}
           project_id: ${{ secrets.RUN_PROJECT }}
       - name: Build UI
@@ -67,7 +67,7 @@ jobs:
       - uses: google-github-actions/setup-gcloud@v2.1.0
         if: steps.filter.outputs.backend == 'true'
         with:
-          version: "299.0.0"
+          version: ">= 363.0.0"
           service_account_key: ${{ secrets.RUN_SA_KEY }}
           project_id: ${{ secrets.RUN_PROJECT }}
       - name: Build API
@@ -94,7 +94,7 @@ jobs:
       - uses: google-github-actions/setup-gcloud@v2.1.0
         if: steps.filter.outputs.frontend == 'true'
         with:
-          version: "299.0.0"
+          version: ">= 363.0.0"
           service_account_key: ${{ secrets.RUN_SA_KEY }}
           project_id: ${{ secrets.RUN_PROJECT }}
       - name: Deploy UI
@@ -124,7 +124,7 @@ jobs:
       - uses: google-github-actions/setup-gcloud@v2.1.0
         if: steps.filter.outputs.backend == 'true'
         with:
-          version: "299.0.0"
+          version: ">= 363.0.0"
           service_account_key: ${{ secrets.RUN_SA_KEY }}
           project_id: ${{ secrets.RUN_PROJECT }}
       - name: Deploy API
