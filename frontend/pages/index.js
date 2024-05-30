@@ -1,20 +1,17 @@
-import Link from "../components/link"
-import Layout from "../components/layout"
-import { makeStyles, Grid, Paper } from "@material-ui/core"
+import Link from "../components/link";
+import Layout from "../components/layout";
+import { makeStyles, Grid, Paper } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    // flexGrow: 1,
-  },
+  root: {},
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
-    // color: theme.palette.text.secondary,
   },
-}))
+}));
 
 export default function Home() {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <Layout>
@@ -53,5 +50,5 @@ export default function Home() {
         </Grid>
       </Grid>
     </Layout>
-  )
+  );
 }
