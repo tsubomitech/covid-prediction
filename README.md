@@ -1,4 +1,4 @@
-# README
+# Covid Prediction by Tsubomitech
 
 ![CI](https://github.com/saada/kenji-mojo-api/workflows/CI/badge.svg)
 
