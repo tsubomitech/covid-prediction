@@ -109,7 +109,7 @@ jobs:
       - name: Deploy UI
         if: steps.filter.outputs.frontend == 'true'
         run: |-
-          export API_URL=$(gcloud run services describe --platform=managed "$API_SERVICE_NAME" --region="$RUN_REGION" | grep -i traffic | awk '{print $2}')
+          export API_URL=$(gcloud run services describe --platform=managed "$API_SERVICE_NAME" --region="$RUN_REGION" | grep -i URL | awk '{print $2}')
           gcloud run deploy "$UI_SERVICE_NAME" \
             --region "$RUN_REGION" \
             --image "gcr.io/$PROJECT_ID/$UI_SERVICE_NAME:$GITHUB_SHA" \
